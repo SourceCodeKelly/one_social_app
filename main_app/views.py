@@ -9,7 +9,7 @@ from django.contrib import messages
 from .forms import SignupForm, LoginForm
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -72,3 +72,7 @@ class ResetPassword(SuccessMessageMixin, PasswordResetView):
                       " If you don't receive an email, " \
                       "please make sure you've entered the address you registered with, and check your spam folder."
     success_url = reverse_lazy('home')
+    
+@login_required
+def profile(request):
+    return render(request, 'profile.html')

@@ -22,7 +22,7 @@
                     <div class="collapse navbar-collapse" id="navbarCollapse">
                         <div class="navbar-nav ml-auto">                            <div class="navbar-nav ml-auto">
                             {% if user.is_authenticated %}
-                              <a href="#" class="nav-item nav-link">Profile</a>
+                              <a href="{% url 'profile' %}" class="nav-item nav-link">Profile</a>
                               <a href="{% url 'logout' %}" class="nav-item nav-link">Logout</a>
                             {% else %}
                               <a href="{% url 'login' %}" class="nav-item nav-link">Sign in</a>
