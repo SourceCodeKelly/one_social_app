@@ -26,6 +26,3 @@ urlpatterns = [
     url(r'^oauth/', include('social_django.urls', namespace='social'))
     
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-# For storing ImageField files
-urlpattern = urlpatterns+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
