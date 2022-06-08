@@ -1,3 +1,43 @@
 body {
-    background-color: rgb(231, 220, 205);
+    background-color: rgb(198, 198, 198);
+}
+.navbar-brand {
+    padding: 0 10px 0 20px;
+}
+.nav-img-container {
+    width: 25px;
+    height: 25px;
+    padding: 5px 10px;
+    margin: 0 10px 0 10px;
+}
+.nav-img {
+    width: 25px;
+    height: 25px;
+    object-fit: cover;
+    border-radius: 100%;
+}
+.upload-dropdown {
+    width: 200px;
+}
+
+.settings-card {
+    width: 1000px;
+    max-width: 100%;
+    padding: 0 20px 20px 20px;
+    margin: 50px 0 10px 0;
+    box-shadow: 0 0 20px black;
+}
+.account-img-container {
+    width: 400px;
+    height: auto;
+    position: relative;
+   
+}
+.account-img {
+    width: 400px;
+    height: 360px;
+    object-fit: cover;
+    border-radius: 100%;
+    position: relative;
+    
 }
