@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from .models import Post, Profile, Like
+from .models import Post, Profile, Like, Followers
 from django.contrib.auth.models import User
 
 # Create your views here.
@@ -172,17 +172,51 @@ def like_post(request):
         post.no_of_likes = post.no_of_likes - 1
         post.save()
         return redirect('/')
+
+############################################
+   
+@login_required(login_url='login')
+def follow(request):
+    if request.method == 'POST':
+        follower = request.POST['follower']
+        user = request.POST['user']
+        if Followers.objects.filter(follower=follower, user=user).first():
+            delete_follower = Followers.objects.get(follower=follower, user=user)
+            delete_follower.delete()
+            return redirect('/profile/'+user)
+        else:
+            new_follower = Followers.objects.create(follower=follower, user=user)
+            new_follower.save()
+            return redirect('/profile/'+user)
+    else:
+        return redirect('/')
     
+############################################
+
 @login_required(login_url='login')
 def profile(request, pk):
     user_object = User.objects.get(username=pk)
     user_profile = Profile.objects.get(user=user_object)
     user_posts = Post.objects.filter(user=pk)
     user_post_length = len(user_posts)
+    follower = request.user.username
+    user = pk
+
+    if Followers.objects.filter(follower=follower, user=user).first():
+        button_text = 'Unfollow'
+    else:
+        button_text = 'Follow'
+
+    user_followers = len(Followers.objects.filter(user=pk))
+    user_following = len(Followers.objects.filter(follower=pk))
+    
     context = {
         'user_object': user_object,
         'user_profile': user_profile,
         'user_posts': user_posts,
-        'user_post_length': user_post_length            
+        'user_post_length': user_post_length,
+        'button_text': button_text,
+        'user_followers': user_followers,
+        'user_following': user_following,
     }
     return render(request, 'profile.html', context)

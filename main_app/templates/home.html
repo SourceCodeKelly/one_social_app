@@ -11,8 +11,10 @@
             <div class="card post-card justify-content-center">
                 <div class="d-flex">
                     <div class="caption">
-                        <img src="{{user_profile.user.avatar.url}}" class="">
-                        <span class="block font-semibold "><a href="/profile/{{post.user}}"> {{post.user}}</a></span>
+                        <div class="account-img-container" style="display: inline;">
+                            <img src="{{user_profile.avatar.url}}" class="nav-img">
+                        </div>
+                        <span class="block font-semibold "  style="display: inline;"><a href="/profile/{{post.user}}"> {{post.user}}</a></span>
                     </div>
                 </div>
                 <div class="card-image post-image">
@@ -26,7 +28,7 @@
                 </div>
                 <div class="d-flex justify-content-left row">
                     <div class="d-flex col" >
-                        <a href="/like-post?post_id={{post.id}}" >
+                        <a href="/like-post?post_id={{post.id}}" style="text-decoration: none;">
                             <div class="d-flex" >
                                 <h4>&#128077;</h4>
                                     {% if post.no_of_likes == 0 %}
