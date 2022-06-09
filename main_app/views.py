@@ -14,12 +14,24 @@ from django.contrib.auth.decorators import login_required
 from .forms import UpdateUserForm, UpdateProfileForm
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from .models import Post
+from .models import Post, Profile, Like
+from django.contrib.auth.models import User
 
 # Create your views here.
 
-class Home(TemplateView):
-    template_name = "home.html"
+class Home(LoginRequiredMixin, TemplateView):
+    template_name = 'home.html'
+    
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context['posts'] = Post.objects.all()
+        return context
+    
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
+
     
 #################################
 
@@ -92,7 +104,7 @@ class ChangePassword(SuccessMessageMixin, PasswordChangeView):
 ########################################################
     
 @login_required
-def profile(request):
+def profile_settings(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
@@ -131,7 +143,7 @@ class PostCreate(LoginRequiredMixin, CreateView):
                 data.user_name = user
                 data.save()
                 messages.success(request, f'Posted Successfully')
-                return redirect('upload')
+                return redirect('home')
         else:
             form = PostForm()
         return render(request, 'upload.html', {'form':form})
@@ -139,3 +151,38 @@ class PostCreate(LoginRequiredMixin, CreateView):
     def form_valid(self,form):
         form.instance.user = self.request.user
         return super(PostCreate, self).form_valid(form)
+
+####################################
+
+@login_required(login_url='login')
+def like_post(request):
+    user = request.user.username
+    post_id = request.GET.get('post_id')
+    post = Post.objects.get(id=post_id)
+    like_filter = Like.objects.filter(post_id=post_id, user=user).first()
+    
+    if like_filter == None:
+        new_like = Like.objects.create(post_id=post_id, user=user)
+        new_like.save()
+        post.no_of_likes = post.no_of_likes + 1
+        post.save()
+        return redirect('/')
+    else:
+        like_filter.delete()
+        post.no_of_likes = post.no_of_likes - 1
+        post.save()
+        return redirect('/')
+    
+@login_required(login_url='login')
+def profile(request, pk):
+    user_object = User.objects.get(username=pk)
+    user_profile = Profile.objects.get(user=user_object)
+    user_posts = Post.objects.filter(user=pk)
+    user_post_length = len(user_posts)
+    context = {
+        'user_object': user_object,
+        'user_profile': user_profile,
+        'user_posts': user_posts,
+        'user_post_length': user_post_length            
+    }
+    return render(request, 'profile.html', context)

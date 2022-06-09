@@ -2,9 +2,10 @@
 {% block content %}
 <div>
     <h2 class="my-4">Create Post</h2>
-          <form method="post" action='upload' enctype="multipart/form-data">
+          <form method="POST" action='upload' enctype="multipart/form-data" class="form-control">
             {% csrf_token %}
-            {{form.as_p}}
+            {{form.image}}
+            {{form.caption}}
                 <button class="btn btn-dark my-4" type="submit">Submit</button>
           </form>
 </div>

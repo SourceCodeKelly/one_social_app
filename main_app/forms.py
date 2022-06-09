@@ -52,6 +52,6 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ('image', 'caption')
         
-    def form_valid(self,form):
-        form.instance.user = self.request.user
-        return super(PostForm, self).form_valid(form)
+        def form_valid(self,form):
+            form.instance.user = self.request.user
+            return super(PostForm, self).form_valid(form)

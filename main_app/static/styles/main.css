@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(198, 198, 198);
+    background-color: rgb(164, 164, 164);
 }
 .navbar-brand {
     padding: 0 10px 0 20px;
@@ -29,15 +29,42 @@ body {
 }
 .account-img-container {
     width: 400px;
+    max-width: 400px;
     height: auto;
     position: relative;
    
 }
 .account-img {
-    width: 400px;
-    height: 360px;
+    width: 200px;
+    max-width: 100%;
+    height: 160px;
+    max-height: 100%;
     object-fit: cover;
     border-radius: 100%;
     position: relative;
     
+}
+
+.post-card {
+    min-width: 500px;
+    max-width: 600px;
+    margin: 20px;
+    justify-content: center;
+    position: relative;
+}
+.post-image {
+    width: 100%;
+    object-fit: contain;
+    margin: 0 auto;
+    padding: 0 auto;
+}
+
+.post-widget {
+    width: 30px;
+    height: 50px;
+}
+
+.caption {
+    padding: 10px;
+
 }
